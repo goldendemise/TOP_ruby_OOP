@@ -65,9 +65,10 @@ class Mastermind
     guess = []
     0.upto(3) do |index|
       guess[index] = @computer_solution[index] if @computer_solution[index] == @secret_code[index]
-      guess[index] = @rainbow.sample if @computer_solution[index].nil? 
+      guess[index] = @rainbow.sample if @computer_solution[index].nil?
       @computer_solution[index] = guess[index] if guess[index] == @secret_code[index]
     end
+    puts "#{guess} was the computer's guess"
     guess
   end
 
