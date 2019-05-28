@@ -6,13 +6,13 @@ class Mastermind
   attr_reader :secret_code
   attr_accessor :turns
   attr_accessor :code_maker
-  attr_accessor :computer_guess
+  attr_accessor :computer_solution
   def initialize
     @rainbow = %w[red yellow blue green cyan magenta]
     @secret_code = []
     @code_maker = ''
     @turns = 1
-    @computer_guess = []
+    @computer_solution = []
   end
 
   def generate_secret
@@ -23,6 +23,7 @@ class Mastermind
     elsif @code_maker == 'player'
       puts 'Enter four color code in space delimited format'
       @secret_code = gets.chomp.split
+      puts @secret_code
     end
   end
 
@@ -61,14 +62,19 @@ class Mastermind
   end
 
   def computer_guess
+    guess = []
     0.upto(3) do |index|
-      @computer_guess[index] = @rainbow.sample if @computer_guess[index].blank?
+      guess[index] = @computer_solution[index] if @computer_solution[index] == @secret_code[index]
+      guess[index] = @rainbow.sample if @computer_solution[index].nil? 
+      @computer_solution[index] = guess[index] if guess[index] == @secret_code[index]
     end
+    guess
   end
 
   def run_game
     while @turns < 13
       user_guess = player_guess if @code_maker == 'computer'
+      user_guess = computer_guess if @code_maker == 'player'
       check_player_result(user_guess)
     end
     "Code Maker Wins!\n".each_char { |c| print c.colorize(@rainbow.sample.to_sym) }if @turns > 12
